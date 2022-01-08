@@ -61,13 +61,55 @@ R_squared = (sumsOfSquaresRegression) / Syy # R², proportion of variability in 
 R_squared_adjusted = 1 - (1 - R_squared) * (n - 1) / (n - 2)
 
 # 2.9) Assessing the Accuracy of the Coefficient Estimates
+# The following functions will be used to determine p-value
+
+def normal(x, mu, sigma):
+    """
+    Function used to determine the probability density of normal distribution
+    :param x: Input
+    :param mu: Mean of the distribution
+    :param sigma: Standard deviation
+    :return: Probability density of normal distribution
+    """
+    e = 2.71828182845904523536
+    pi = 3.1415926535897932384
+
+    nominator = e**(- ((x - mu)**2) / (2 * sigma**2))
+    denominator = (sigma * (2 * pi)**0.5)
+    return nominator / denominator
+
+def integrate_normal(a, b, n, mu, sigma):
+    """
+    Function used to determine the integral (area) of the probability density of normal distribution
+    using the middle method in the interval [a, b]
+    :param a: Start point of the interval [a, b]
+    :param b: End point of interval [a, b]
+    :param n: Number of divisions of interval [a, b]
+    :param mu: Mean of the distribution
+    :param sigma: Standard deviation of the distribution
+    :return: Area between [a, b], output in decimals (0.4 not 40 %)
+    """
+    dx = float(b-a)/n
+    area = 0
+    midpoint = a + (dx/2)
+
+    for i in range(n):
+        area += normal(midpoint, mu, sigma) * dx
+        midpoint += dx
+    return area
 
 standardError_b0 = residualStandardError * ((1 / n) + ((x_mean ** 2) / Sxx)) # Variance of b0
 standardError_b1 = residualStandardError / Sxx # Variance of b1
-95_percent_confidenceInterval_b0 = [b0 - 2 * standardError_b0 ** 0.5, b0 + 2 * standardError_b0 ** 0.5]
-95_percent_confidenceInterval_b1 = [b1 - 2 * standardError_b1 ** 0.5, b1 + 2 * standardError_b1 ** 0.5]
+b0_confidenceIntervalLeft = round(b0 - 2 * standardError_b0 ** 0.5, 2)
+b0_confidenceIntervalRight = round(b0 + 2 * standardError_b0 ** 0.5, 2)
+b1_confidenceIntervalLeft = round(b1 - 2 * standardError_b1 ** 0.5, 2)
+b1_confidenceIntervalRight = round(b1 + 2 * standardError_b1 ** 0.5, 2)
+percent_95_confidenceInterval_b0 = [b0_confidenceIntervalLeft, b0_confidenceIntervalRight]
+percent_95_confidenceInterval_b1 = [b1_confidenceIntervalLeft, b1_confidenceIntervalRight]
 t_statistic_b0 = b0 / (standardError_b0 ** 0.5)
 t_statistic_b1 = b1 / (standardError_b1 ** 0.5)
+p_value_b0 = integrate_normal(t_statistic_b0, 100, 100, 0, standardError_b0)
+p_value_b1 = integrate_normal(t_statistic_b1, 100, 100, 0, standardError_b1)
 
 # 3) Plotting
 
@@ -98,11 +140,18 @@ print('Sum of Absolutes Error = ', sumsOfAbsolutesError)
 print('Residual Standard Error = ', residualStandardError)
 print('Standard Error b0 = ', standardError_b0)
 print('Standard Error b1 = ', standardError_b1)
-print('95 % Confidence Interval for b0 = ', 95_percent_confidenceInterval_b0)
-print('95 % Confidence Interval for b1 = ', 95_percent_confidenceInterval_b1)
-print('Mean Squared Error = ', meanSquaredError1
+print('95 % Confidence Interval for b0 = ', percent_95_confidenceInterval_b0)
+print('95 % Confidence Interval for b1 = ', percent_95_confidenceInterval_b1)
+print('P-value for b0 = ', p_value_b0)
+print('P-value for b1 = ', p_value_b1)
+print('Mean Squared Error = ', meanSquaredError)
 print('Root Mean Squared Error = ', rootMeanSquaredError)
 print('Mean Absolute Error = ', meanAbsoluteError)
 print('Pearson correlation coefficient = ', pearsonCoefficient)
 print('R_squared = ', R_squared)
 print('R_squared_adjusted = ', R_squared_adjusted)
+
+
+
+
+
