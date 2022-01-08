@@ -36,32 +36,38 @@ y_std = y_variance ** 0.5
 
 Covariance = Sxy / n
 
-# 2.6) Regression line (y = b0 + b1 * x)
+# 2.6) Regression line (y = b0 + b1 * x + ϵ)
 
 b1 = Sxy / Sxx
 b0 = y_mean - b1 * x_mean
 y_predicted = [b0 + b1 * i for i in x]
 
 # 2.7) Sum of squares
+# OBS: SST = SSR + SSE
 
-sumsOfSquaresTotal = Syy # SST
-sumsOfSquaresRegression = sum([(i - y_mean) ** 2 for i in y_predicted]) # SSR
-sumsOfSquaresError = sum([(i - j) ** 2 for i, j in zip(y, y_predicted)]) # SSE or RSS
+sumsOfSquaresTotal = Syy # SST or TSS, measures the amount of variability inherent in the response before the regression is performed
+sumsOfSquaresRegression = sum([(i - y_mean) ** 2 for i in y_predicted]) # SSR, measures the amount of variability in the response explained performing the regression
+sumsOfSquaresError = sum([(i - j) ** 2 for i, j in zip(y, y_predicted)]) # SSE or RSS, measures the amount of variability in the response that is left unexplained after performing the regression
 sumsOfAbsolutesError = sum([abs(i - j) for i, j in zip(y, y_predicted)]) # SSA
-residualStandardError = (sumsOfSquaresError / (n - 2)) ** 0.5 # RSE
+residualStandardError = (sumsOfSquaresError / (n - 2)) ** 0.5 # RSE, estimate of the standard deviation of ϵ
 
-# 2.8) Error estimation
+# 2.8) Assessing the Accuracy of the Model
 
-standardError_b0 = residualStandardError * ((1 / n) + ((x_mean ** 2) / Sxx))
-standardError_b1 = residualStandardError / Sxx
-95_percent_confidenceInterval_b0 = [b0 - 2 * standardError_b0 ** 0.5, b0 + 2 * standardError_b0 ** 0.5]
-95_percent_confidenceInterval_b1 = [b1 - 2 * standardError_b1 ** 0.5, b1 + 2 * standardError_b1 ** 0.5]
 meanSquaredError = sumsOfSquaresError / n # MSE
 rootMeanSquaredError = meanSquaredError ** 0.5 # RMSE
 meanAbsoluteError = sumsOfAbsolutesError / n # MAE
 pearsonCoefficient = Covariance / (x_std * y_std)
-R_squared = (sumsOfSquaresRegression) / Syy
+R_squared = (sumsOfSquaresRegression) / Syy # R², proportion of variability in Y that can be explained using X
 R_squared_adjusted = 1 - (1 - R_squared) * (n - 1) / (n - 2)
+
+# 2.9) Assessing the Accuracy of the Coefficient Estimates
+
+standardError_b0 = residualStandardError * ((1 / n) + ((x_mean ** 2) / Sxx)) # Variance of b0
+standardError_b1 = residualStandardError / Sxx # Variance of b1
+95_percent_confidenceInterval_b0 = [b0 - 2 * standardError_b0 ** 0.5, b0 + 2 * standardError_b0 ** 0.5]
+95_percent_confidenceInterval_b1 = [b1 - 2 * standardError_b1 ** 0.5, b1 + 2 * standardError_b1 ** 0.5]
+t_statistic_b0 = b0 / (standardError_b0 ** 0.5)
+t_statistic_b1 = b1 / (standardError_b1 ** 0.5)
 
 # 3) Plotting
 
