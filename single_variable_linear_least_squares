@@ -48,12 +48,14 @@ sumsOfSquaresTotal = Syy # SST
 sumsOfSquaresRegression = sum([(i - y_mean) ** 2 for i in y_predicted]) # SSR
 sumsOfSquaresError = sum([(i - j) ** 2 for i, j in zip(y, y_predicted)]) # SSE or RSS
 sumsOfAbsolutesError = sum([abs(i - j) for i, j in zip(y, y_predicted)]) # SSA
-residualStandardError = (sumsOfSquaresError / (n - 2)) ** 0.5
+residualStandardError = (sumsOfSquaresError / (n - 2)) ** 0.5 # RSE
 
 # 2.8) Error estimation
 
 standardError_b0 = residualStandardError * ((1 / n) + ((x_mean ** 2) / Sxx))
 standardError_b1 = residualStandardError / Sxx
+95_percent_confidenceInterval_b0 = [b0 - 2 * standardError_b0 ** 0.5, b0 + 2 * standardError_b0 ** 0.5]
+95_percent_confidenceInterval_b1 = [b1 - 2 * standardError_b1 ** 0.5, b1 + 2 * standardError_b1 ** 0.5]
 meanSquaredError = sumsOfSquaresError / n # MSE
 rootMeanSquaredError = meanSquaredError ** 0.5 # RMSE
 meanAbsoluteError = sumsOfAbsolutesError / n # MAE
@@ -90,7 +92,9 @@ print('Sum of Absolutes Error = ', sumsOfAbsolutesError)
 print('Residual Standard Error = ', residualStandardError)
 print('Standard Error b0 = ', standardError_b0)
 print('Standard Error b1 = ', standardError_b1)
-print('Mean Squared Error = ', meanSquaredError)
+print('95 % Confidence Interval for b0 = ', 95_percent_confidenceInterval_b0)
+print('95 % Confidence Interval for b1 = ', 95_percent_confidenceInterval_b1)
+print('Mean Squared Error = ', meanSquaredError1
 print('Root Mean Squared Error = ', rootMeanSquaredError)
 print('Mean Absolute Error = ', meanAbsoluteError)
 print('Pearson correlation coefficient = ', pearsonCoefficient)
