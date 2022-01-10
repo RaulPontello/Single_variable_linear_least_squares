@@ -60,6 +60,7 @@ meanAbsoluteError = sumsOfAbsolutesError / n # MAE
 pearsonCoefficient = Covariance / (x_std * y_std)
 R_squared = (sumsOfSquaresRegression) / Syy # R², proportion of variability in Y that can be explained using X
 R_squared_adjusted = 1 - (1 - R_squared) * (n - 1) / (n - 2)
+F_statistic = sumsOfSquaresRegression / errorVariance 
 
 # 2.9) Assessing the Accuracy of the Coefficient Estimates
 # The following functions will be used to determine p-value
@@ -155,3 +156,5 @@ print('Mean Absolute Error = ', meanAbsoluteError)
 print('Pearson correlation coefficient = ', pearsonCoefficient)
 print('R_squared = ', R_squared)
 print('R_squared_adjusted = ', R_squared_adjusted)
+print('F_statistic = ', F_statistic)
+
