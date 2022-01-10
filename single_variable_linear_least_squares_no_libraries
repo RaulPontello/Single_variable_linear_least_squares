@@ -100,7 +100,7 @@ def integrate_normal(a, b, n, mu, sigma):
         midpoint += dx
     return area
 
-variance_b1 = errorVariance * ((1 / n) + ((x_mean ** 2) / Sxx)) # Variance of b0
+variance_b0 = errorVariance * ((1 / n) + ((x_mean ** 2) / Sxx)) # Variance of b0
 standardDeviation_b0 = variance_b1 ** 0.5 # Standard Deviation of b0
 variance_b1 = errorVariance / Sxx # Variance of b1
 standardDeviation_b1 = variance_b1 ** 0.5 # Standard Deviation of b1
