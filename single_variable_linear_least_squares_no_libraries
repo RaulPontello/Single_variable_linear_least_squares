@@ -112,8 +112,8 @@ percent_95_confidenceInterval_b0 = [b0_confidenceIntervalLeft, b0_confidenceInte
 percent_95_confidenceInterval_b1 = [b1_confidenceIntervalLeft, b1_confidenceIntervalRight]
 t_statistic_b0 = b0 / standardDeviation_b0
 t_statistic_b1 = b1 / standardDeviation_b1
-p_value_b0 = 0.5 - integrate_normal(0, t_statistic_b0, 1000, 0, standardDeviation_b0) # number describing how likely it is that your data would have occurred by random chance and b0 = 0
-p_value_b1 = 0.5 - integrate_normal(0, t_statistic_b1, 1000, 0, standardDeviation_b1) # number describing how likely it is that your data would have occurred by random chance and b1 = 0
+p_value_b0 = 0.5 - integrate_normal(0, t_statistic_b0, 1000, 0, standardDeviation_b0) # Hypothesis testing: H0: b0 = 0, H1: b0 != 0 --> p small = reject H0 = b0 != 0 
+p_value_b1 = 0.5 - integrate_normal(0, t_statistic_b1, 1000, 0, standardDeviation_b1) # Hypothesis testing: H0: b1 = 0, H1: b1 != 0 --> p small = reject H0 = b1 != 0 
 
 # 3) Plotting
 
