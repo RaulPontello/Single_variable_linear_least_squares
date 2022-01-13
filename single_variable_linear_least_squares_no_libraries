@@ -37,7 +37,7 @@ y_std = y_variance ** 0.5
 
 Covariance = Sxy / n
 
-# 2.6) Regression line (y = b0 + b1 * x + ϵ)
+# 2.6) Regression equation (y = b0 + b1 * x + ϵ)
 
 b1 = Sxy / Sxx
 b0 = y_mean - b1 * x_mean
