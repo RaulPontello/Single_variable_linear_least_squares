@@ -59,7 +59,7 @@ meanSquaredError = sumsOfSquaresError / n # MSE
 rootMeanSquaredError = meanSquaredError ** 0.5 # RMSE
 meanAbsoluteError = sumsOfAbsolutesError / n # MAE
 pearsonCoefficient = Covariance / (x_std * y_std)
-R_squared = (sumsOfSquaresRegression) / Syy # R², proportion of variability in Y that can be explained using the linear model for X
+R_squared = (sumsOfSquaresRegression) / sumsOfSquaresTotal # R², proportion of variability in Y that can be explained using the linear model for X
 R_squared_adjusted = 1 - (1 - R_squared) * (n - 1) / (n - 2)
 F_statistic = sumsOfSquaresRegression / errorVariance 
 
