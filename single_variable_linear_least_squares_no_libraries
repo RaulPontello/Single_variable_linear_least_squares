@@ -61,7 +61,6 @@ meanAbsoluteError = sumsOfAbsolutesError / n # MAE
 pearsonCoefficient = Covariance / (x_std * y_std)
 R_squared = (sumsOfSquaresRegression) / sumsOfSquaresTotal # R², proportion of variability in Y that can be explained using the linear model for X
 R_squared_adjusted = 1 - (1 - R_squared) * (n - 1) / (n - 2)
-F_statistic = sumsOfSquaresRegression / errorVariance 
 
 # 2.9) Assessing the Accuracy of the Coefficient Estimates
 # The following functions will be used to determine p-value
@@ -113,6 +112,7 @@ percent_95_confidenceInterval_b0 = [b0_confidenceIntervalLeft, b0_confidenceInte
 percent_95_confidenceInterval_b1 = [b1_confidenceIntervalLeft, b1_confidenceIntervalRight]
 t_statistic_b0 = b0 / standardDeviation_b0
 t_statistic_b1 = b1 / standardDeviation_b1
+F_statistic = sumsOfSquaresRegression / errorVariance 
 p_value_b0 = 0.5 - integrate_normal(0, t_statistic_b0, 1000, 0, standardDeviation_b0) # Hypothesis testing: H0: b0 = 0, H1: b0 != 0 --> p small = reject H0 = b0 != 0 
 p_value_b1 = 0.5 - integrate_normal(0, t_statistic_b1, 1000, 0, standardDeviation_b1) # Hypothesis testing: H0: b1 = 0, H1: b1 != 0 --> p small = reject H0 = b1 != 0 
 
