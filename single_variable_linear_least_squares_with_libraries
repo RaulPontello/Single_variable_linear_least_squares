@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt  # To visualize
 import pandas as pd  # To read data
 from sklearn.linear_model import LinearRegression
+import sklearn.metrics
 import statsmodels.api as sm
 
 # 1) Input
@@ -38,6 +39,10 @@ summary_table = sm.OLS(y, sm.add_constant(x)).fit().summary()
 
 y_prediction = linear_regression.predict(x)
 
+# 2.6) Assessing the Accuracy of the Model
+
+meanSquaredError = sklearn.metrics.mean_squared_error(y, y_prediction)
+
 # 3) Plotting
 
 plt.scatter(x, y)
@@ -49,5 +54,6 @@ plt.show()
 print('bo = ', b0)
 print('b1 = ', b1)
 print('R² = ', R_squared)
+print('Mean squared error = ', meanSquaredError)
 print('y_prediction = ', y_prediction)
 print(summary_table)
