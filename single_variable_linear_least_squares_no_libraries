@@ -1,50 +1,50 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# 1) Input
+# Input
 
 data = pd.read_csv('SAT.csv', sep = ',')
 x = data['SAT']
 y = data['GPA']
 
-# 2) Output
+# Output
 
-# 2.0) Lenght
+# Lenght
 
 n = len(x) 
 
-# 2.1) Arithmetic Mean
+# Arithmetic Mean
 
 x_mean = sum(x) / n
 y_mean = sum(y) / n
 
-# 2.2) Variability
+# Variability
 
 Sxx = sum([(i - x_mean) ** 2 for i in x])  # sum of the squares of the difference between each xi and x_mean
 Syy = sum([(i - y_mean) ** 2 for i in y])  # sum of the squares of the difference between each yi and y_mean
 Sxy = sum([(i - x_mean) * (j - y_mean) for i, j in zip(x, y)])  # sum of the product of (xi - x_mean) * (yi - y_mean)
 
-# 2.3) Variance
+# Variance
 
 x_variance = Sxx / n
 y_variance = Syy / n
 
-# 2.4) Standard deviation
+# Standard deviation
 
 x_std = x_variance ** 0.5
 y_std = y_variance ** 0.5
 
-# 2.5) Covariance
+# Covariance
 
 covariance = Sxy / n
 
-# 2.6) Regression equation (y = b0 + b1 * x + ϵ)
+# Regression equation (y = b0 + b1 * x + ϵ)
 
 b1 = Sxy / Sxx
 b0 = y_mean - b1 * x_mean
 y_predicted = [b0 + b1 * i for i in x]
 
-# 2.7) Sum of squares
+# Sum of squares
 # OBS: SST = SSR + SSE
 
 sum_squares_total = Syy # SST or TSS, measures the amount of variability inherent in the response before the regression is performed
@@ -54,7 +54,7 @@ sum_absolutes_error = sum([abs(i - j) for i, j in zip(y, y_predicted)]) # SSA
 error_variance = sum_squares_error / (n - 2)
 error_standard_deviation = error_variance ** 0.5 # RSE (Residual Standard Error), estimate of the standard deviation of ϵ
 
-# 2.8) Assessing the Accuracy of the Model
+# Assessing the Accuracy of the Model
 
 mean_squared_error = sum_squares_error / n # MSE
 root_mean_squared_error = mean_squared_error ** 0.5 # RMSE
@@ -63,7 +63,7 @@ pearson_coefficient = covariance / (x_std * y_std)
 R_squared = (sum_squares_regression) / sum_squares_total # R², proportion of variability in Y that can be explained using the linear model for X
 R_squared_adjusted = 1 - (1 - R_squared) * (n - 1) / (n - 2)
 
-# 2.9) Assessing the Accuracy of the Coefficient Estimates
+# Assessing the Accuracy of the Coefficient Estimates
 # The following functions will be used to determine p-value
 
 def normal(x, mu, sigma):
@@ -115,7 +115,7 @@ F_statistic = sum_squares_regression / error_variance
 p_value_b0 = 2*(0.5 - integrate_normal(0, t_statistic_b0, 1000, 0, 1)) # Hypothesis testing: H0: b0 = 0, H1: b0 != 0 --> p small = reject H0 = b0 != 0 
 p_value_b1 = 2*(0.5 - integrate_normal(0, t_statistic_b1, 1000, 0, 1)) # Hypothesis testing: H0: b1 = 0, H1: b1 != 0 --> p small = reject H0 = b1 != 0 
 
-# 3) Plotting
+# Plotting
 
 plt.scatter(x, y)
 fig = plt.plot(x, y_predicted, lw=4, c='orange', label='regression line')
@@ -123,7 +123,7 @@ plt.xlabel('x')
 plt.ylabel('y')
 plt.show()
 
-# 4) Results
+# Results
 
 print('x_mean = ', x_mean)
 print('x_variance = ', x_variance)
