@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 # 1) Input
 
-data = pd.read_csv('data.csv', sep = ';')
+data = pd.read_csv('SAT.csv', sep = ',')
 x = data['SAT']
 y = data['GPA']
 
@@ -35,7 +36,7 @@ y_std = y_variance ** 0.5
 
 # 2.5) Covariance
 
-Covariance = Sxy / n
+covariance = Sxy / n
 
 # 2.6) Regression equation (y = b0 + b1 * x + ϵ)
 
@@ -46,20 +47,20 @@ y_predicted = [b0 + b1 * i for i in x]
 # 2.7) Sum of squares
 # OBS: SST = SSR + SSE
 
-sumsOfSquaresTotal = Syy # SST or TSS, measures the amount of variability inherent in the response before the regression is performed
-sumsOfSquaresRegression = sum([(i - y_mean) ** 2 for i in y_predicted]) # SSR, measures the amount of variability in the response explained performing the regression
-sumsOfSquaresError = sum([(i - j) ** 2 for i, j in zip(y, y_predicted)]) # SSE or RSS, measures the amount of variability in the response that is left unexplained after performing the regression
-sumsOfAbsolutesError = sum([abs(i - j) for i, j in zip(y, y_predicted)]) # SSA
-errorVariance = sumsOfSquaresError / (n - 2)
-errorStandardDeviation = errorVariance ** 0.5 # RSE (Residual Standard Error), estimate of the standard deviation of ϵ
+sum_squares_total = Syy # SST or TSS, measures the amount of variability inherent in the response before the regression is performed
+sum_squares_regression = sum([(i - y_mean) ** 2 for i in y_predicted]) # SSR, measures the amount of variability in the response explained performing the regression
+sum_squares_error = sum([(i - j) ** 2 for i, j in zip(y, y_predicted)]) # SSE or RSS, measures the amount of variability in the response that is left unexplained after performing the regression
+sum_absolutes_error = sum([abs(i - j) for i, j in zip(y, y_predicted)]) # SSA
+error_variance = sum_squares_error / (n - 2)
+error_standard_deviation = error_variance ** 0.5 # RSE (Residual Standard Error), estimate of the standard deviation of ϵ
 
 # 2.8) Assessing the Accuracy of the Model
 
-meanSquaredError = sumsOfSquaresError / n # MSE
-rootMeanSquaredError = meanSquaredError ** 0.5 # RMSE
-meanAbsoluteError = sumsOfAbsolutesError / n # MAE
-pearsonCoefficient = Covariance / (x_std * y_std)
-R_squared = (sumsOfSquaresRegression) / sumsOfSquaresTotal # R², proportion of variability in Y that can be explained using the linear model for X
+mean_squared_error = sum_squares_error / n # MSE
+root_mean_squared_error = mean_squared_error ** 0.5 # RMSE
+mean_absolute_error = sum_absolutes_error / n # MAE
+pearson_coefficient = covariance / (x_std * y_std)
+R_squared = (sum_squares_regression) / sum_squares_total # R², proportion of variability in Y that can be explained using the linear model for X
 R_squared_adjusted = 1 - (1 - R_squared) * (n - 1) / (n - 2)
 
 # 2.9) Assessing the Accuracy of the Coefficient Estimates
@@ -73,11 +74,9 @@ def normal(x, mu, sigma):
     :param sigma: Standard deviation
     :return: Probability density of normal distribution
     """
-    e = 2.71828182845904523536
-    pi = 3.1415926535897932384
 
-    nominator = e**(- ((x - mu)**2) / (2 * sigma**2))
-    denominator = (sigma * (2 * pi)**0.5)
+    nominator = np.e**(- ((x - mu)**2) / (2 * sigma**2))
+    denominator = (sigma * (2 * np.pi)**0.5)
     return nominator / denominator
 
 def integrate_normal(a, b, n, mu, sigma):
@@ -100,21 +99,21 @@ def integrate_normal(a, b, n, mu, sigma):
         midpoint += dx
     return area
 
-variance_b0 = errorVariance * ((1 / n) + ((x_mean ** 2) / Sxx)) # Variance of b0
-standardDeviation_b0 = variance_b0 ** 0.5 # Standard Deviation of b0
-variance_b1 = errorVariance / Sxx # Variance of b1
-standardDeviation_b1 = variance_b1 ** 0.5 # Standard Deviation of b1
-b0_confidenceIntervalLeft = round(b0 - 2 * standardDeviation_b0 ** 0.5, 2)
-b0_confidenceIntervalRight = round(b0 + 2 * standardDeviation_b0 ** 0.5, 2)
-b1_confidenceIntervalLeft = round(b1 - 2 * standardDeviation_b1 ** 0.5, 2)
-b1_confidenceIntervalRight = round(b1 + 2 * standardDeviation_b1 ** 0.5, 2)
-percent_95_confidenceInterval_b0 = [b0_confidenceIntervalLeft, b0_confidenceIntervalRight]
-percent_95_confidenceInterval_b1 = [b1_confidenceIntervalLeft, b1_confidenceIntervalRight]
-t_statistic_b0 = b0 / standardDeviation_b0
-t_statistic_b1 = b1 / standardDeviation_b1
-F_statistic = sumsOfSquaresRegression / errorVariance 
-p_value_b0 = 0.5 - integrate_normal(0, t_statistic_b0, 1000, 0, standardDeviation_b0) # Hypothesis testing: H0: b0 = 0, H1: b0 != 0 --> p small = reject H0 = b0 != 0 
-p_value_b1 = 0.5 - integrate_normal(0, t_statistic_b1, 1000, 0, standardDeviation_b1) # Hypothesis testing: H0: b1 = 0, H1: b1 != 0 --> p small = reject H0 = b1 != 0 
+variance_b0 = error_variance * ((1 / n) + ((x_mean ** 2) / Sxx)) # Variance of b0
+standard_deviation_b0 = variance_b0 ** 0.5 # Standard Deviation of b0
+variance_b1 = error_variance / Sxx # Variance of b1
+standard_deviation_b1 = variance_b1 ** 0.5 # Standard Deviation of b1
+b0_confidence_interval_left = round(b0 - 2 * standard_deviation_b0 ** 0.5, 2)
+b0_confidence_interval_right = round(b0 + 2 * standard_deviation_b0 ** 0.5, 2)
+b1_confidence_interval_left = round(b1 - 2 * standard_deviation_b1 ** 0.5, 2)
+b1_confidence_interval_right = round(b1 + 2 * standard_deviation_b1 ** 0.5, 2)
+percent_95_confidence_interval_b0 = [b0_confidence_interval_left, b0_confidence_interval_right]
+percent_95_confidence_interval_b1 = [b1_confidence_interval_left, b1_confidence_interval_right]
+t_statistic_b0 = b0 / standard_deviation_b0
+t_statistic_b1 = b1 / standard_deviation_b1
+F_statistic = sum_squares_regression / error_variance 
+p_value_b0 = 2*(0.5 - integrate_normal(0, t_statistic_b0, 1000, 0, 1)) # Hypothesis testing: H0: b0 = 0, H1: b0 != 0 --> p small = reject H0 = b0 != 0 
+p_value_b1 = 2*(0.5 - integrate_normal(0, t_statistic_b1, 1000, 0, 1)) # Hypothesis testing: H0: b1 = 0, H1: b1 != 0 --> p small = reject H0 = b1 != 0 
 
 # 3) Plotting
 
@@ -135,26 +134,26 @@ print('y_std = ', y_std)
 print('Sxx = ', Sxx)
 print('Syy = ', Syy)
 print('Sxy = ', Sxy)
-print('Covariance = ', Covariance)
+print('Covariance = ', covariance)
 print('b0 = ', b0)
 print('b1 = ', b1)
 print('Sum of Squares Total = ', Syy)
-print('Sum of Squares Regression = ', sumsOfSquaresRegression)
-print('Sum of Squares Error = ', sumsOfSquaresError)
-print('Sum of Absolutes Error = ', sumsOfAbsolutesError)
-print('Residual Standard Error = ', errorStandardDeviation)
-print('Standard Error b0 = ', standardDeviation_b0)
-print('Standard Error b1 = ', standardDeviation_b1)
-print('95 % Confidence Interval for b0 = ', percent_95_confidenceInterval_b0)
-print('95 % Confidence Interval for b1 = ', percent_95_confidenceInterval_b1)
+print('Sum of Squares Regression = ', sum_squares_regression)
+print('Sum of Squares Error = ', sum_squares_error)
+print('Sum of Absolutes Error = ', sum_absolutes_error)
+print('Residual Standard Error = ', error_standard_deviation)
+print('Standard Error b0 = ', standard_deviation_b0)
+print('Standard Error b1 = ', standard_deviation_b1)
+print('95 % Confidence Interval for b0 = ', percent_95_confidence_interval_b0)
+print('95 % Confidence Interval for b1 = ', percent_95_confidence_interval_b1)
 print('t-statistic for b0 = ', t_statistic_b0)
 print('t-statistic for b1 = ', t_statistic_b1)
 print('P-value for b0 = ', p_value_b0)
 print('P-value for b1 = ', p_value_b1)
-print('Mean Squared Error = ', meanSquaredError)
-print('Root Mean Squared Error = ', rootMeanSquaredError)
-print('Mean Absolute Error = ', meanAbsoluteError)
-print('Pearson correlation coefficient = ', pearsonCoefficient)
+print('Mean Squared Error = ', mean_squared_error)
+print('Root Mean Squared Error = ', root_mean_squared_error)
+print('Mean Absolute Error = ', mean_absolute_error)
+print('Pearson correlation coefficient = ', pearson_coefficient)
 print('R_squared = ', R_squared)
 print('R_squared_adjusted = ', R_squared_adjusted)
 print('F_statistic = ', F_statistic)
