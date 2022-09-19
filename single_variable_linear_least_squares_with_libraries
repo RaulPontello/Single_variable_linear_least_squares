@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt  # To visualize
 import pandas as pd  # To read data
-from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
+
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
 
 # Input
 
-data = pd.read_csv('data.csv', sep = ';')
+data = pd.read_csv('data.csv', sep = ',')
 x = data[['SAT']]
 y = data['GPA']
 
@@ -31,11 +33,14 @@ summary_table = sm.OLS(y, sm.add_constant(x)).fit().summary()
 
 # Make predictions for y
 
-y_prediction = linear_regression.predict(x)
+y_predicted = linear_regression.predict(x)
 
 # Model metrics
 
 R_squared = linear_regression.score(x, y)
+mean_squared_error = metrics.mean_squared_error(y, y_predicted)
+root_mean_squared_error = mean_squared_error ** 0.5
+mean_absolute_error = metrics.mean_absolute_error(y, y_predicted)
 
 # Plotting
 
@@ -48,5 +53,8 @@ plt.show()
 print('bo = ', b0)
 print('b1 = ', b1)
 print('R² = ', R_squared)
+print('mean_squared_error = ', mean_squared_error)
+print('mean_absolute_error = ', mean_absolute_error)
+print('root_mean_squared_error = ', root_mean_squared_error)
 print('y_prediction = ', y_prediction)
 print(summary_table)
