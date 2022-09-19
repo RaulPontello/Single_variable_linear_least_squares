@@ -45,7 +45,7 @@ mean_absolute_error = metrics.mean_absolute_error(y, y_predicted)
 # Plotting
 
 plt.scatter(x, y)
-plt.plot(x, y_prediction, color = 'red')
+plt.plot(x, y_predicted, color = 'red')
 plt.show()
 
 # Results
@@ -56,5 +56,5 @@ print('R² = ', R_squared)
 print('mean_squared_error = ', mean_squared_error)
 print('mean_absolute_error = ', mean_absolute_error)
 print('root_mean_squared_error = ', root_mean_squared_error)
-print('y_prediction = ', y_prediction)
+print('y_predicted = ', y_predicted)
 print(summary_table)
