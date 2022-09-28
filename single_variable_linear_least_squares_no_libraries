@@ -4,7 +4,7 @@ import pandas as pd
 
 # Input
 
-data = pd.read_csv('SAT.csv', sep = ',')
+data = pd.read_csv('data.csv', sep = ',')
 x = data['SAT']
 y = data['GPA']
 
@@ -101,13 +101,13 @@ def integrate_normal(a, b, n, mu, sigma):
     return area
 
 variance_b0 = error_variance * ((1 / n) + ((x_mean ** 2) / Sxx)) # Variance of b0
-standard_deviation_b0 = variance_b0 ** 0.5 # Standard Deviation of b0
+standard_error_b0 = variance_b0 ** 0.5 # Standard Deviation of b0
 variance_b1 = error_variance / Sxx # Variance of b1
-standard_deviation_b1 = variance_b1 ** 0.5 # Standard Deviation of b1
-percent_95_confidence_interval_b0 = [b0 - 2 * standard_deviation_b0, b0 + 2 * standard_deviation_b0]
-percent_95_confidence_interval_b1 = [b1 - 2 * standard_deviation_b1, b1 + 2 * standard_deviation_b1]
-t_statistic_b0 = b0 / standard_deviation_b0
-t_statistic_b1 = b1 / standard_deviation_b1
+standard_error_b1 = variance_b1 ** 0.5 # Standard Deviation of b1
+percent_95_confidence_interval_b0 = [b0 - 2 * standard_error_b0, b0 + 2 * standard_error_b0]
+percent_95_confidence_interval_b1 = [b1 - 2 * standard_error_b1, b1 + 2 * standard_error_b1]
+t_statistic_b0 = b0 / standard_error_b0
+t_statistic_b1 = b1 / standard_error_b1
 F_statistic = sum_squares_regression / error_variance 
 p_value_b0 = 2*(0.5 - integrate_normal(0, t_statistic_b0, 1000, 0, 1)) # Hypothesis testing: H0: b0 = 0, H1: b0 != 0 --> p small = reject H0 = b0 != 0 
 p_value_b1 = 2*(0.5 - integrate_normal(0, t_statistic_b1, 1000, 0, 1)) # Hypothesis testing: H0: b1 = 0, H1: b1 != 0 --> p small = reject H0 = b1 != 0 
@@ -154,4 +154,3 @@ print('Pearson correlation coefficient = ', pearson_coefficient)
 print('R_squared = ', R_squared)
 print('R_squared_adjusted = ', R_squared_adjusted)
 print('F_statistic = ', F_statistic)
-
